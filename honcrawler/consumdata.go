@@ -1,6 +1,7 @@
 package honcrawler
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -16,7 +17,6 @@ func Download(hd *HonDetail) {
 		hon-details may be mixin.
 	*/
 	outputDirTitle := "./hon/" + genDirName(hd) + "/"
-	// fmt.Printf("create output Dir %s", outputDirTitle)
 	err := os.MkdirAll(outputDirTitle, os.ModePerm)
 	if err != nil {
 		fmt.Println(err)
@@ -47,5 +47,12 @@ func genDirName(hd *HonDetail) (s string) {
 }
 
 func SaveTag(tag string) {
-	//TODO wirte the tags to a file
+	file, err := os.OpenFile("./activeTags", os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println("fail crate")
+	}
+	write := bufio.NewWriter(file)
+	write.WriteString(tag + "\r\n")
+	write.Flush()
+	defer file.Close()
 }

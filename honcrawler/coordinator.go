@@ -71,6 +71,9 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 			infos := GenGallaryInfos(i)
 			for _, info := range infos {
 				d := GenHonDetails(info)
+				if d.PageNum > 500 {
+					continue
+				}
 				for _, t := range d.Tags {
 					c.sendTag(t)
 				}
