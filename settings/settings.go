@@ -54,6 +54,8 @@ type CrawlerSettingS struct {
 	ProxyHost        string
 	TagConsumerCount int
 	HonConsumerCount int
+	HonBuffer        int
+	TagBuffer        int
 	WantedTags       []string
 }
 

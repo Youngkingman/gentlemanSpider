@@ -33,8 +33,8 @@ type coordinator struct {
 }
 
 var Coordinator = coordinator{
-	honChannel: make(chan *HonDetail, 4096),
-	tagChannel: make(chan string, 4096),
+	honChannel: make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
+	tagChannel: make(chan string, settings.CrawlerSetting.TagBuffer),
 	gWaitGroup: sync.WaitGroup{},
 	dWaitGroup: sync.WaitGroup{},
 	tagMap:     make(map[string]bool),
