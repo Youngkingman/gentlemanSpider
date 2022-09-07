@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gocolly/colly/v2"
+	colly "github.com/gocolly/colly/v2"
 )
 
 func Download(hd *HonDetail) {
@@ -28,17 +28,15 @@ func Download(hd *HonDetail) {
 	})
 
 	UrlCollector.OnHTML("#picarea", func(e *colly.HTMLElement) {
-		// originSource := e.Attr("src")
-		// ImgCollector.Visit("https:" + originSource)
+		originSource := e.Attr("src")
+		ImgCollector.Visit("https:" + originSource)
 	})
 
 	for _, url := range hd.Images {
 		UrlCollector.Visit(Host + url)
 	}
-
 }
 
-// 如果要做tag收集可以在这里做
 func genDirName(hd *HonDetail) (s string) {
 	s = hd.Title + "["
 	for _, v := range hd.Tags {
@@ -46,4 +44,8 @@ func genDirName(hd *HonDetail) (s string) {
 	}
 	s = s + "]"
 	return
+}
+
+func SaveTag(tag string) {
+	//TODO wirte the tags to a file
 }

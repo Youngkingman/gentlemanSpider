@@ -17,11 +17,6 @@ import (
 // from https://www.wnacg.com/albums-index-page-1.html
 // to https://www.wnacg.com/albums-index-page-7101.html
 
-const Host = `https://www.wnacg.com`
-const GallaryUrl string = Host + `/albums-index-page-%d.html`
-const UserAgent string = `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0`
-const ImgsPerPage int = 12
-
 // page number regex
 var pattern = regexp.MustCompile(`(\d+)P`)
 
@@ -98,9 +93,6 @@ func (hd *HonDetail) crawlImages(g *GallaryInfo) {
 	HonCollector := collector.Clone()
 	total := hd.PageNum/ImgsPerPage + 1
 	HonCollector.OnHTML(".pic_box>a", func(e *colly.HTMLElement) {
-		// e.ForEach("a", func(i int, h *colly.HTMLElement) {
-
-		// })
 		hd.Images = append(hd.Images, e.Attr("href"))
 	})
 

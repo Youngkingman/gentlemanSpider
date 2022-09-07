@@ -5,26 +5,39 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gocolly/colly/v2"
+	"github.com/Youngkingman/gentlemanSpider/settings"
+	colly "github.com/gocolly/colly/v2"
 )
+
+/*
+	Some constant for the spider
+*/
+const Host = `https://www.wnacg.com`
+const GallaryUrl string = Host + `/albums-index-page-%d.html`
+const UserAgent string = `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0`
+const ImgsPerPage int = 12
 
 /*
 	The coordinator manager all the concurrent behaviors.
 */
 
 type coordinator struct {
-	TagChannel chan string     // channel for tag map
-	HonChannel chan *HonDetail // channel for hon data
+	tagChannel chan string     // channel for tag map
+	honChannel chan *HonDetail // channel for hon data
 
-	GWaitGroup sync.WaitGroup
-	DWaitGroup sync.WaitGroup
-	Collector  colly.Collector
+	gWaitGroup sync.WaitGroup
+	dWaitGroup sync.WaitGroup
+
+	tagMap map[string]bool
+	mutex  sync.Mutex
 }
 
 var Coordinator = coordinator{
-	HonChannel: make(chan *HonDetail, 4096),
-	GWaitGroup: sync.WaitGroup{},
-	DWaitGroup: sync.WaitGroup{},
+	honChannel: make(chan *HonDetail, 4096),
+	tagChannel: make(chan string, 4096),
+	gWaitGroup: sync.WaitGroup{},
+	dWaitGroup: sync.WaitGroup{},
+	tagMap:     make(map[string]bool),
 }
 
 // base collector
@@ -40,54 +53,73 @@ func init() {
 		fmt.Printf("Error %s: %v\n", r.Request.URL, err)
 	})
 	// proxy setting
-	collector.SetProxy("http://127.0.0.1:55723")
+	collector.SetProxy(settings.CrawlerSetting.ProxyHost)
 }
 
-func (c *coordinator) Start() {
-	c.generate(7101)
-	c.consume(4)
-
-	c.GWaitGroup.Wait()
-	close(c.HonChannel)
-	c.DWaitGroup.Wait()
+func (c *coordinator) sendHon(hd *HonDetail) {
+	c.honChannel <- hd
 }
 
-func (c *coordinator) send(hd *HonDetail) {
-	c.HonChannel <- hd
+func (c *coordinator) sendTag(tag string) {
+	c.tagChannel <- tag
 }
 
-func (c *coordinator) generate(pCnt int) {
-	for i := 1; i <= pCnt; i++ {
-		c.GWaitGroup.Add(1)
+func (c *coordinator) generateHon(pSt int, pEnd int) {
+	for i := pSt; i <= pEnd; i++ {
+		c.gWaitGroup.Add(1)
 		go func(i int) {
 			infos := GenGallaryInfos(i)
 			for _, info := range infos {
 				d := GenHonDetails(info)
-				c.send(d)
+				for _, t := range d.Tags {
+					c.sendTag(t)
+				}
+				c.sendHon(d)
 			}
-			c.GWaitGroup.Done()
+			c.gWaitGroup.Done()
 		}(i)
 	}
 
 }
 
-func (c *coordinator) consume(cnt int) {
+func (c *coordinator) consumeHon(cnt int) {
 	for i := 0; i < cnt; i++ {
-		c.DWaitGroup.Add(1)
-		go func(i int) {
-			for hon := range c.HonChannel {
+		c.dWaitGroup.Add(1)
+		go func() {
+			for hon := range c.honChannel {
 				Download(hon)
 			}
-			c.DWaitGroup.Done()
-		}(i)
+			c.dWaitGroup.Done()
+		}()
 	}
 }
 
-func (c *coordinator) Try() {
-	c.generate(1)
-	c.consume(4)
+func (c *coordinator) comsumeTag(cnt int) {
+	for i := 0; i < cnt; i++ {
+		c.dWaitGroup.Add(1)
+		go func() {
+			for tag := range c.tagChannel {
+				c.mutex.Lock()
+				if ok := c.tagMap[tag]; !ok {
+					c.tagMap[tag] = true
+					SaveTag(tag)
+				}
+				c.mutex.Unlock()
+			}
+		}()
+	}
+}
 
-	c.GWaitGroup.Wait()
-	close(c.HonChannel)
-	c.DWaitGroup.Wait()
+func (c *coordinator) Start() {
+	c.generateHon(
+		settings.CrawlerSetting.PageStart,
+		settings.CrawlerSetting.PageEnd,
+	)
+	c.consumeHon(settings.CrawlerSetting.HonConsumerCount)
+	c.comsumeTag(settings.CrawlerSetting.TagConsumerCount)
+
+	c.gWaitGroup.Wait()
+	close(c.honChannel)
+	close(c.tagChannel)
+	c.dWaitGroup.Wait()
 }
