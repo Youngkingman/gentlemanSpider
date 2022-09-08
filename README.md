@@ -80,7 +80,7 @@ CrawlerSetting:
 ```
 
 - `PageStart`: 最小为 1 爬虫开始页面，浏览 [这里](https://www.wnacg.com/albums-index-page-1.html)查看最大页数
-- `PageEnd`: 最小为 1， 必须**大于** `PageStart`，爬虫结束页面，同上浏览 [这里](https://www.wnacg.com/albums-index-page-1.html)查看最大页数（截至写这句话是7104页）
+- `PageEnd`: 最小为 1， 必须**大于等于** `PageStart`，爬虫结束页面，同上浏览 [这里](https://www.wnacg.com/albums-index-page-1.html)查看最大页数（截至写这句话是7104页）
 - `EnableProxy`: 是否使用代理（使用需要填写`ProxyHost`)，大陆用户填`true`，海外用户填`false`
 - `ProxyHost`: 查看自己电脑的代理，需要带上端口
 - `TagConsumerCount`: 用于收集本子标签的配置，配置完成后会在可执行文件同级目录下创建包含所有标签(`xp`/作者/是否彩页汉化)信息的`activeTag`文件，会一定程度减慢本子的下载，不需要可以设置为0
