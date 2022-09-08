@@ -1,5 +1,5 @@
 # gentlemanSpider
-*Get some Hons my friends！GKDGKD！*
+> *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
 ## 用途：
 
@@ -8,6 +8,18 @@
 - 按照配置对个人喜好的xp标签进行过滤（可用标签在项目下的`activeTags`文件夹中可查看）
 
 ## 项目构建：
+
+### 直接下载发布版本（推荐）
+
+提供的版本类型：
+
+| OS          | ARCH          |
+| ----------- | ------------- |
+| Linux       | x86/amd64/arm |
+| Windows     | x86/amd64     |
+| Darwin(Mac) | amd64         |
+
+在 [Release v0.0.1](https://github.com/Youngkingman/gentlemanSpider/releases/tag/v0.0.1) 页面下载压缩包解压后按后续说明编写配置，之后运行可执行工具即可。
 
 ### 直接构建（推荐）
 
@@ -41,19 +53,7 @@ docker run -d --name gspider -v /home/hondata:/goapp --network host gspider:late
 
 ### 使用`go`相关工具
 
-// TODO
-
-### 直接下载发布版本（推荐）
-
-提供的版本类型：
-
-| OS          | ARCH          |
-| ----------- | ------------- |
-| Linux       | x86/amd64/arm |
-| Windows     | x86/amd64     |
-| Darwin(Mac) | amd64         |
-
-下载压缩包解压后按后续说明编写配置，之后运行可执行工具即可。
+// TODO 待我研究下怎么用`go get`安装
 
 ## 项目配置使用说明：
 
@@ -88,7 +88,17 @@ CrawlerSetting:
 
 ## 如何查看自己电脑的代理服务器端口(Win)
 
-Linus用户请自行探索翻墙设置。对于windows用户
+Linus用户请自行探索翻墙**后**设置。对于windows用户，在你**已经开启了梯子**的情况下（既然你上了`github`那么大概率已经开了）:
+
+1. 右键右下角工具栏网络图标，选择网络和Internet设置
+
+   ​	![](./asset/step1.png)
+
+2. 左侧选择代理，查找端口地址，如下图则为`http://127.0.0.1:62340`
+
+   ![](./asset/step2.png)
+
+将你得到的对应地址填入`config.yaml`对应的`ProxyHost`配置即可。
 
 ## 并发数的选取以及并发架构介绍
 
@@ -104,8 +114,8 @@ TagBuffer: 32
 程序为典型的生产/消费者模型。
 
 - 生产者：生产则会是根据你的页面爬取范围来选择的，一个页面20个本子为一个生产者，一般来说生产速度会远大于消费速度（请求图片`url`并向本地写入图片的`I/O`远远比获取图片地址信息快），所以消费者的个数决定了你最终的爬取速度，`HonBuffer`和`TagBuffer`为管道缓冲区大小，生产者生产的信息会在管道中暂时存储等候消费者获取。
-- 消费者：消费者个数由使用者决定，为`HonConsumerCount`，主要负责根据图片信息下载图片并写入本地文件，这部分的`I/O`操作是最重的，意味着大部分机器时间会由消费者耗费，越多的消费者对于速度的提升理论上会更好，当然这也看你本身的机器硬件。
+- 消费者：消费者个数由使用者决定，为`HonConsumerCount`，主要负责根据图片信息下载图片并写入本地文件，这部分的`I/O`操作是最重的，意味着大部分机器时间会由消费者耗费，越多的消费者对于速度的提升理论上会更好，当然这也看你本身的机器硬件（具体配置待我好好研究）。
 
 下面是整体的设计图：
 
-// TODO
+![](./asset/framwork.jpg)
