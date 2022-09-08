@@ -1,4 +1,7 @@
 # gentlemanSpider
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gojp/goreportcard/blob/master/LICENSE)
+
 > *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
 ## 用途：
