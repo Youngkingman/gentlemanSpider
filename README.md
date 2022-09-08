@@ -32,6 +32,7 @@
 
 ```bash
 git clone https://github.com/Youngkingman/gentlemanSpider.git
+go mod download
 go build
 ./gentlemanSpider
 ```
