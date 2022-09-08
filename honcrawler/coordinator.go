@@ -79,8 +79,10 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 				if !parseTages(d.Tags) {
 					continue
 				}
-				for _, t := range d.Tags {
-					c.sendTag(t)
+				if settings.CrawlerSetting.TagConsumerCount > 0 {
+					for _, t := range d.Tags {
+						c.sendTag(t)
+					}
 				}
 				c.sendHon(d)
 			}
@@ -124,7 +126,9 @@ func (c *coordinator) Start() {
 		settings.CrawlerSetting.PageEnd,
 	)
 	c.consumeHon(settings.CrawlerSetting.HonConsumerCount)
-	c.comsumeTag(settings.CrawlerSetting.TagConsumerCount)
+	if settings.CrawlerSetting.TagConsumerCount > 0 {
+		c.comsumeTag(settings.CrawlerSetting.TagConsumerCount)
+	}
 
 	c.gWaitGroup.Wait()
 	close(c.honChannel)
