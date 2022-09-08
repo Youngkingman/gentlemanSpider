@@ -123,5 +123,4 @@ TagBuffer: 32
 
 ![](./asset/framwork.jpg)
 
-<img src="./asset/yes.jpg" style="zoom:16%;" /><img src="./asset/no.jpg" style="zoom:20%;" />
 
