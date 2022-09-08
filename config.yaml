@@ -1,12 +1,12 @@
 CrawlerSetting:
-  PageStart: 2
-  PageEnd: 2
+  PageStart: 1
+  PageEnd: 10
   EnableProxy: true
   ProxyHost: http://127.0.0.1:62340
-  TagConsumerCount: 1
-  HonConsumerCount: 2
-  HonBuffer: 8192
-  TagBuffer: 8192
+  TagConsumerCount: 4
+  HonConsumerCount: 16
+  HonBuffer: 32
+  TagBuffer: 32
   EnableFilter: false
   WantedTags:
     - 百合
