@@ -87,7 +87,7 @@ CrawlerSetting:
 - `HonBuffer`:必须大于 0，
 - `TagBuffer`:若设置了 `TagConsumerCount`则 必须大于 0
 - `EnableFilter`:是否使用标签过滤，`true`为使用，`false`会默认不过滤爬取所有本子
-- `WantedTags`: 你的标签集，需要`EnableFilter`为`true`，每行以`-{yourXP}`的形式对标签进行选取，可以在`activeTag`文件中选取自己所需的标签，最终下载的本子至少会具有你给出的标签集中的一个标签（标签给的越少下载的本子一般会越少）
+- `WantedTags`: 你的标签集，需要`EnableFilter`为`true`，每行以`- {yourXP}`的形式对标签进行选取，可以在`activeTag`文件中选取自己所需的标签，最终下载的本子至少会具有你给出的标签集中的一个标签（标签给的越少下载的本子一般会越少）
 
 ## 如何查看自己电脑的代理服务器端口(Win)
 
