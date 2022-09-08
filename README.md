@@ -57,7 +57,16 @@ docker run -d --name gspider -v /home/hondata:/goapp --network host gspider:late
 
 ### 使用`go`相关工具
 
-// TODO 待我研究下怎么用`go get`安装
+在你自己的`golang`项目中使用`go get -u github.com/Youngkingman/gentlemanSpider`命令，只好导入包输入下面的代码就可以引用了：
+
+```golang
+import "github.com/Youngkingman/gentlemanSpider/honcrawler"
+func main() {
+	honcrawler.Coordinator.Start()
+}
+```
+
+除此以外你还可以根据导出函数自己定制并发逻辑，具体参考实现部分。
 
 ## 项目配置使用说明：
 
