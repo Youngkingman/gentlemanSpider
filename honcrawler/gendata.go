@@ -18,7 +18,7 @@ import (
 // to https://www.wnacg.com/albums-index-page-7101.html
 
 // page number regex
-var pattern = regexp.MustCompile(`(\d+)P`)
+var patternNum = regexp.MustCompile(`(\d+)P`)
 
 // typical HonUrl /photos-index-aid-169728.html
 type GallaryInfo struct {
@@ -74,7 +74,7 @@ func (hd *HonDetail) crawlTagAndPage(g *GallaryInfo) {
 				hd.Tags = append(hd.Tags, tags...)
 			}
 			if i == 1 { // 页数，解析到PageNum
-				pageStr := pattern.FindAllStringSubmatch(h.Text, -1)
+				pageStr := patternNum.FindAllStringSubmatch(h.Text, -1)
 				cnt, err := strconv.Atoi(pageStr[0][1])
 				if err != nil {
 					fmt.Printf("wrong with str unmarshal %v", pageStr)
@@ -100,11 +100,4 @@ func (hd *HonDetail) crawlImages(g *GallaryInfo) {
 		url := pageUrlTrans(g.HonUrl, i)
 		HonCollector.Visit(Host + url)
 	}
-}
-
-// `/photos-index-aid-169728.html`` =>`/photos-index-page-i-aid-169728.html`
-func pageUrlTrans(u string, i int) string {
-	strs := strings.Split(u, "-")
-	ret := fmt.Sprintf("%s-%s-page-%d-%s-%s", strs[0], strs[1], i, strs[2], strs[3])
-	return ret
 }

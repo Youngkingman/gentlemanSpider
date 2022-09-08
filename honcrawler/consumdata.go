@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 
 	colly "github.com/gocolly/colly/v2"
 )
+
+var patternWinFile = regexp.MustCompile(`[/\:*?"<>|]`)
 
 func Download(hd *HonDetail) {
 	UrlCollector := collector.Clone()
@@ -16,7 +19,7 @@ func Download(hd *HonDetail) {
 		While the website is continuous updating, duplicated
 		hon-details may be mixin.
 	*/
-	outputDirTitle := "./hon/" + genDirName(hd) + "/"
+	outputDirTitle := "./hon/" + genDirNameAndFilter(hd) + "/"
 	err := os.MkdirAll(outputDirTitle, os.ModePerm)
 	if err != nil {
 		fmt.Println(err)
@@ -35,15 +38,6 @@ func Download(hd *HonDetail) {
 	for _, url := range hd.Images {
 		UrlCollector.Visit(Host + url)
 	}
-}
-
-func genDirName(hd *HonDetail) (s string) {
-	s = hd.Title + "["
-	for _, v := range hd.Tags {
-		s = s + "_" + v
-	}
-	s = s + "]"
-	return
 }
 
 func SaveTag(tag string) {

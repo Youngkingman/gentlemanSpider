@@ -53,7 +53,9 @@ func init() {
 		fmt.Printf("Error %s: %v\n", r.Request.URL, err)
 	})
 	// proxy setting
-	collector.SetProxy(settings.CrawlerSetting.ProxyHost)
+	if settings.CrawlerSetting.EnableProxy {
+		collector.SetProxy(settings.CrawlerSetting.ProxyHost)
+	}
 }
 
 func (c *coordinator) sendHon(hd *HonDetail) {
@@ -72,6 +74,9 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 			for _, info := range infos {
 				d := GenHonDetails(info)
 				if d.PageNum > 500 {
+					continue
+				}
+				if !parseTages(d.Tags) {
 					continue
 				}
 				for _, t := range d.Tags {

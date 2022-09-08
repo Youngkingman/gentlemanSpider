@@ -1,11 +1,13 @@
 CrawlerSetting:
-  PageStart: 1
-  PageEnd: 7101
-  ProxyHost: http://127.0.0.1:55723
-  TagConsumerCount: 4
-  HonConsumerCount: 64
+  PageStart: 2
+  PageEnd: 2
+  EnableProxy: true
+  ProxyHost: http://127.0.0.1:62340
+  TagConsumerCount: 1
+  HonConsumerCount: 2
   HonBuffer: 8192
   TagBuffer: 8192
+  EnableFilter: false
   WantedTags:
     - 百合
     - 女同士

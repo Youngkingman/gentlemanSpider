@@ -52,14 +52,17 @@ type CrawlerSettingS struct {
 	PageStart        int
 	PageEnd          int
 	ProxyHost        string
+	EnableProxy      bool
 	TagConsumerCount int
 	HonConsumerCount int
 	HonBuffer        int
 	TagBuffer        int
+	EnableFilter     bool
 	WantedTags       []string
 }
 
 var CrawlerSetting *CrawlerSettingS
+var WantedTagsSet = make(map[string]bool)
 
 func SetupSetting() error {
 	s, err := NewSetting("./")
@@ -69,6 +72,9 @@ func SetupSetting() error {
 	err = s.ReadSection("CrawlerSetting", &CrawlerSetting)
 	if err != nil {
 		return err
+	}
+	for _, v := range CrawlerSetting.WantedTags {
+		WantedTagsSet[v] = true
 	}
 	return nil
 }
