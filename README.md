@@ -1,6 +1,6 @@
 # gentlemanSpider
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gojp/goreportcard/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gojp/goreportcard/blob/master/LICENSE) ![goreport](https://goreportcard.com/badge/github.com/Youngkingman/gentlemanSpider)
 
 > *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
