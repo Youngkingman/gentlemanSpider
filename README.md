@@ -41,7 +41,7 @@ go build
 要求系统装有`docker`，测试版本为`20.10.17`。首先创建容器相关的挂载目录：
 
 ```shell
-cd /home && mkder hondata
+cd /home && mkdir hondata
 ```
 
 工作目录下克隆本仓库，在`Dockerfile`同级目录下运行：
