@@ -4,7 +4,9 @@
 
 > *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
-​	<img src="README/yes-16626242255544.jpg" style="zoom:30%;" /><img src="./asset/no.jpg" style="zoom:38%;" />
+<img src="./asset/yes.jpg" style="zoom:33%;" /><img src="./asset/no.jpg" style="zoom:42%;" />
+
+
 
 ## 用途：
 
