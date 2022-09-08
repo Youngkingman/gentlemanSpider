@@ -2,10 +2,13 @@ package honcrawler
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/Youngkingman/gentlemanSpider/settings"
 )
+
+var patternWinFile = regexp.MustCompile(`[/\:*?"<>|]`)
 
 func genDirNameAndFilter(hd *HonDetail) (s string) {
 	s = hd.Title + "["

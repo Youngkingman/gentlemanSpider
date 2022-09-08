@@ -4,12 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"regexp"
 
 	colly "github.com/gocolly/colly/v2"
 )
-
-var patternWinFile = regexp.MustCompile(`[/\:*?"<>|]`)
 
 func Download(hd *HonDetail) {
 	UrlCollector := collector.Clone()
