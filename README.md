@@ -4,6 +4,8 @@
 
 > *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
+​	<img src="README/yes-16626242255544.jpg" style="zoom:30%;" /><img src="./asset/no.jpg" style="zoom:38%;" />
+
 ## 用途：
 
 - 爬取并保存网站 [绅士漫画](https://www.wnacg.com) 的本子/色图（大陆用户要求在梯子的环境下使用）
@@ -22,7 +24,7 @@
 | Windows     | x86/amd64     |
 | Darwin(Mac) | amd64         |
 
-在 [Release v0.0.1](https://github.com/Youngkingman/gentlemanSpider/releases/tag/v0.0.1) 页面下载压缩包解压后按后续说明编写配置，之后运行可执行工具即可。
+在 [Release v0.0.1](https://github.com/Youngkingman/gentlemanSpider/releases/tag/v0.0.1) 页面下载压缩包解压后按后续说明编写配置，之后运行可执行文件即可。
 
 ### 直接构建（推荐）
 
