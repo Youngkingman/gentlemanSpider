@@ -4,10 +4,6 @@
 
 > *Get some Ero-Hons my friends！GKD!GKD！——Cheems*
 
-<img src="./asset/yes.jpg" style="zoom:16%;" /><img src="./asset/no.jpg" style="zoom:20%;" />
-
-
-
 ## 用途：
 
 - 爬取并保存网站 [绅士漫画](https://www.wnacg.com) 的本子/色图（大陆用户要求在梯子的环境下使用）
@@ -126,3 +122,6 @@ TagBuffer: 32
 下面是整体的设计图：
 
 ![](./asset/framwork.jpg)
+
+<img src="./asset/yes.jpg" style="zoom:16%;" /><img src="./asset/no.jpg" style="zoom:20%;" />
+
