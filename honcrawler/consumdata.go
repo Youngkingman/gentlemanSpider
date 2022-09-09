@@ -10,7 +10,9 @@ import (
 
 func Download(hd *HonDetail) {
 	UrlCollector := collector.Clone()
-	ImgCollector := collector.Clone()
+	UrlCollector.Async = true
+	UrlCollector.MaxDepth = 1
+	ImgCollector := UrlCollector.Clone()
 
 	/*
 		While the website is continuous updating, duplicated

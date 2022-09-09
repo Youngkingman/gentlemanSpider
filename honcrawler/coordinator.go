@@ -89,7 +89,6 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 			c.gWaitGroup.Done()
 		}(i)
 	}
-
 }
 
 func (c *coordinator) consumeHon(cnt int) {
