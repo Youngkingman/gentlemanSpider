@@ -37,7 +37,7 @@ var Coordinator = coordinator{
 	tagChannel: make(chan string, settings.CrawlerSetting.TagBuffer),
 	gWaitGroup: sync.WaitGroup{},
 	dWaitGroup: sync.WaitGroup{},
-	// tagSet:     make(map[string]struct{}),
+	tagSet:     make(map[string]struct{}),
 }
 
 // base collector
@@ -67,7 +67,7 @@ func (c *coordinator) sendTag(tag string) {
 }
 
 func (c *coordinator) generateHon(pSt int, pEnd int) {
-	ch := make(chan struct{}, settings.CrawlerSetting.HonConsumerCount*3/2)
+	ch := make(chan struct{}, settings.CrawlerSetting.HonConsumerCount/2)
 	for i := pSt; i <= pEnd; i++ {
 		ch <- struct{}{}
 		c.gWaitGroup.Add(1)

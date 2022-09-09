@@ -51,7 +51,3 @@ func (s set) has(key string) bool {
 func (s set) insert(key string) {
 	s[key] = struct{}{}
 }
-
-func (s set) delete(key string) {
-	delete(s, key)
-}

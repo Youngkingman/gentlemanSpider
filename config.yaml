@@ -4,9 +4,9 @@ CrawlerSetting:
   EnableProxy: true
   ProxyHost: http://127.0.0.1:55723
   TagConsumerCount: 2
-  HonConsumerCount: 12
-  HonBuffer: 8
-  TagBuffer: 8
+  HonConsumerCount: 6
+  HonBuffer: 12
+  TagBuffer: 12
   EnableFilter: false
   WantedTags:
     - 百合
