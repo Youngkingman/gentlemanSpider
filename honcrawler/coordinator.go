@@ -22,22 +22,24 @@ const ImgsPerPage int = 12
 */
 
 type coordinator struct {
-	tagChannel chan string     // channel for tag map
-	honChannel chan *HonDetail // channel for hon data
+	tagChannel   chan string     // channel for tag map
+	honChannel   chan *HonDetail // channel for hon data
+	limitChannel chan struct{}
 
 	gWaitGroup sync.WaitGroup
 	dWaitGroup sync.WaitGroup
 
-	tagMap map[string]bool
+	tagSet set
 	mutex  sync.Mutex
 }
 
 var Coordinator = coordinator{
-	honChannel: make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
-	tagChannel: make(chan string, settings.CrawlerSetting.TagBuffer),
-	gWaitGroup: sync.WaitGroup{},
-	dWaitGroup: sync.WaitGroup{},
-	tagMap:     make(map[string]bool),
+	honChannel:   make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
+	tagChannel:   make(chan string, settings.CrawlerSetting.TagBuffer),
+	limitChannel: make(chan struct{}, settings.CrawlerSetting.HonConsumerCount/2),
+	gWaitGroup:   sync.WaitGroup{},
+	dWaitGroup:   sync.WaitGroup{},
+	tagSet:       make(map[string]struct{}),
 }
 
 // base collector
@@ -68,6 +70,7 @@ func (c *coordinator) sendTag(tag string) {
 
 func (c *coordinator) generateHon(pSt int, pEnd int) {
 	for i := pSt; i <= pEnd; i++ {
+		c.limitChannel <- struct{}{}
 		c.gWaitGroup.Add(1)
 		go func(i int) {
 			infos := GenGallaryInfos(i)
@@ -85,6 +88,7 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 					}
 				}
 				c.sendHon(d)
+				<-c.limitChannel
 			}
 			c.gWaitGroup.Done()
 		}(i)
@@ -109,8 +113,8 @@ func (c *coordinator) comsumeTag(cnt int) {
 		go func() {
 			for tag := range c.tagChannel {
 				c.mutex.Lock()
-				if ok := c.tagMap[tag]; !ok {
-					c.tagMap[tag] = true
+				if !c.tagSet.has(tag) {
+					c.tagSet.insert(tag)
 					SaveTag(tag)
 				}
 				c.mutex.Unlock()
@@ -120,14 +124,14 @@ func (c *coordinator) comsumeTag(cnt int) {
 }
 
 func (c *coordinator) Start() {
-	c.generateHon(
-		settings.CrawlerSetting.PageStart,
-		settings.CrawlerSetting.PageEnd,
-	)
 	c.consumeHon(settings.CrawlerSetting.HonConsumerCount)
 	if settings.CrawlerSetting.TagConsumerCount > 0 {
 		c.comsumeTag(settings.CrawlerSetting.TagConsumerCount)
 	}
+	c.generateHon(
+		settings.CrawlerSetting.PageStart,
+		settings.CrawlerSetting.PageEnd,
+	)
 
 	c.gWaitGroup.Wait()
 	close(c.honChannel)

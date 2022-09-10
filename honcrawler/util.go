@@ -39,3 +39,15 @@ func parseTages(tags []string) bool {
 	}
 	return false
 }
+
+// implementation of set
+type set map[string]struct{}
+
+func (s set) has(key string) bool {
+	_, ok := s[key]
+	return ok
+}
+
+func (s set) insert(key string) {
+	s[key] = struct{}{}
+}
