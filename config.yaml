@@ -1,13 +1,15 @@
 CrawlerSetting:
   PageStart: 1
-  PageEnd: 10
+  PageEnd: 1
   EnableProxy: true
   ProxyHost: http://127.0.0.1:62340
-  TagConsumerCount: 4
-  HonConsumerCount: 16
-  HonBuffer: 32
-  TagBuffer: 32
+  TagConsumerCount: 2
+  HonConsumerCount: 6
+  HonBuffer: 36
+  TagBuffer: 36
   EnableFilter: false
   WantedTags:
     - 百合
     - 女同士
+    - Yuri
+    - yuri
