@@ -22,8 +22,9 @@ const ImgsPerPage int = 12
 */
 
 type coordinator struct {
-	tagChannel chan string     // channel for tag map
-	honChannel chan *HonDetail // channel for hon data
+	tagChannel   chan string     // channel for tag map
+	honChannel   chan *HonDetail // channel for hon data
+	limitChannel chan struct{}
 
 	gWaitGroup sync.WaitGroup
 	dWaitGroup sync.WaitGroup
@@ -33,11 +34,12 @@ type coordinator struct {
 }
 
 var Coordinator = coordinator{
-	honChannel: make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
-	tagChannel: make(chan string, settings.CrawlerSetting.TagBuffer),
-	gWaitGroup: sync.WaitGroup{},
-	dWaitGroup: sync.WaitGroup{},
-	tagSet:     make(map[string]struct{}),
+	honChannel:   make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
+	tagChannel:   make(chan string, settings.CrawlerSetting.TagBuffer),
+	limitChannel: make(chan struct{}, settings.CrawlerSetting.HonConsumerCount/2),
+	gWaitGroup:   sync.WaitGroup{},
+	dWaitGroup:   sync.WaitGroup{},
+	tagSet:       make(map[string]struct{}),
 }
 
 // base collector
@@ -67,9 +69,8 @@ func (c *coordinator) sendTag(tag string) {
 }
 
 func (c *coordinator) generateHon(pSt int, pEnd int) {
-	ch := make(chan struct{}, settings.CrawlerSetting.HonConsumerCount/2)
 	for i := pSt; i <= pEnd; i++ {
-		ch <- struct{}{}
+		c.limitChannel <- struct{}{}
 		c.gWaitGroup.Add(1)
 		go func(i int) {
 			infos := GenGallaryInfos(i)
@@ -87,6 +88,7 @@ func (c *coordinator) generateHon(pSt int, pEnd int) {
 					}
 				}
 				c.sendHon(d)
+				<-c.limitChannel
 			}
 			c.gWaitGroup.Done()
 		}(i)
