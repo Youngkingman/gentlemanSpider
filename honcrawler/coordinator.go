@@ -37,9 +37,11 @@ var Coordinator = coordinator{
 	honChannel:   make(chan *HonDetail, settings.CrawlerSetting.HonBuffer),
 	tagChannel:   make(chan string, settings.CrawlerSetting.TagBuffer),
 	limitChannel: make(chan struct{}, settings.CrawlerSetting.HonConsumerCount/2),
-	gWaitGroup:   sync.WaitGroup{},
-	dWaitGroup:   sync.WaitGroup{},
-	tagSet:       make(map[string]struct{}),
+
+	gWaitGroup: sync.WaitGroup{},
+	dWaitGroup: sync.WaitGroup{},
+
+	tagSet: make(map[string]struct{}),
 }
 
 // base collector
@@ -107,7 +109,7 @@ func (c *coordinator) consumeHon(cnt int) {
 	}
 }
 
-func (c *coordinator) comsumeTag(cnt int) {
+func (c *coordinator) consumeTag(cnt int) {
 	for i := 0; i < cnt; i++ {
 		c.dWaitGroup.Add(1)
 		go func() {
@@ -126,7 +128,7 @@ func (c *coordinator) comsumeTag(cnt int) {
 func (c *coordinator) Start() {
 	c.consumeHon(settings.CrawlerSetting.HonConsumerCount)
 	if settings.CrawlerSetting.TagConsumerCount > 0 {
-		c.comsumeTag(settings.CrawlerSetting.TagConsumerCount)
+		c.consumeTag(settings.CrawlerSetting.TagConsumerCount)
 	}
 	c.generateHon(
 		settings.CrawlerSetting.PageStart,
