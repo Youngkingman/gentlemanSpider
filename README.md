@@ -32,7 +32,7 @@ PS：建议大家先爬取较为后面的页数，前面的页数访问者多往
 | Windows     | x86/amd64     |
 | Darwin(Mac) | amd64         |
 
-在 [Release v0.0.1](https://github.com/Youngkingman/gentlemanSpider/releases/tag/v0.0.1) 页面下载压缩包解压后按后续说明编写配置，之后运行可执行文件即可。
+在 [Release v0.0.2](https://github.com/Youngkingman/gentlemanSpider/releases/tag/v0.0.2) 页面下载压缩包解压后按后续说明编写配置，之后运行可执行文件即可。
 
 ### 直接构建（推荐）
 
