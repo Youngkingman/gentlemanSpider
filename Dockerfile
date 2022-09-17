@@ -15,7 +15,7 @@ COPY . .
 RUN go build -o gentlemanSpider .
 
 FROM alpine:latest
-WORKDIR /goapp
+WORKDIR /root/
 
 #Copy the cofig file
 COPY . .
